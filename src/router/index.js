@@ -1,19 +1,59 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import HomeView from '../views/HomeView.vue'
+import Login from '../views/Login.vue'
+import Sidebar from '../views/Sidebar.vue'
+import Dashboard from '../components/Dashboard.vue'
+import SalesOrder from '../components/SalesOrder.vue'
+import SalesHistory from '../components/SalesHistory.vue'
+import UserAccounts from '../components/UserAccounts.vue'
+import Product from '../components/Product.vue'
+import Home from '../components/Home.vue'
+// import admindashboard from '../views/Admin/Dashboard.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component: Home //lalagyan ng page
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/sidebar',
+    name: 'sidebar',
+    component: Sidebar
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: Product
+  },
+  {
+    path: '/sales-order',
+    name: 'sales-order',
+    component: SalesOrder
+  },
+  {
+    path: '/sales-history',
+    name: 'sales-history',
+    component: SalesHistory
+  },
+  {
+    path: '/user-account',
+    name: 'user-account',
+    component: UserAccounts
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: Home
   }
 ]
 
