@@ -65,7 +65,7 @@
         rows="2"
       ></v-textarea>
       
-          <v-btn type="submit" @click="register">Signup</v-btn>
+          <v-btn type="submit" @click="register">Sign up</v-btn>
      
       <v-row>
         <v-col>
@@ -80,8 +80,7 @@
   </template>
   
   <script>
-  import axios from 'axios'
-  
+ 
   export default {
     data() {
       return {
@@ -97,18 +96,45 @@
         validationErrors: {}
       };
     },
-    methods: {
-      register() {
-        // Your registration logic here
-        // Access form data using this.formData
-        // Validate the form and handle errors
-      },
+    //   methods: {
+    //     async loginAuth(){
+    //         try {
+    //             const response = await axios.post("/loginAuth",{
+    //                 Username:this.username,
+    //                 Password:this.password
+    //             })
+
+    //             const decodedToken = jwt_decode(response.data.token);
+    //             const userRole = decodedToken.aud;
+
+    //             // Use more secure storage like HttpOnly cookies instead of localStorage
+    //             sessionStorage.setItem('token', response.data.token)
+                
+    //             switch (userRole) {
+    //                 case 'Farmer':
+    //                     this.$router.push('/farmer/home');
+    //                     break;
+    //                 case 'DAP':
+    //                     this.$router.push('/admin/dashboard');
+    //                     break;
+    //                 // Handle other roles if needed
+    //                 default:
+    //                     this.$router.push('/login');
+    //             }
+    //         } catch (error) {
+    //             console.error("Error during login:", error);
+    //             // Handle errors more explicitly, show user-friendly messages if needed
+    //         }
+    //     }
+    // },
+
+
       goToLogin() {
         // Redirect to the login page
         // Use router or other navigation methods
       }
     }
-  };
+;
   </script>
   
     <style scoped>
