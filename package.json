@@ -7,15 +7,24 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@mdi/font": "^7.3.67",
+=======
+    "@mdi/font": "5.9.55",
+>>>>>>> b3e0702d002067d23c57adb55694b34892f04cdd
     "axios": "^1.6.1",
     "core-js": "^3.8.3",
     "register-service-worker": "^1.7.2",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+<<<<<<< HEAD
     "vuetify": "^3.4.1",
     "webfontloader": "^1.6.28"
+=======
+    "vuetify": "^3.0.0-beta.0",
+    "webfontloader": "^1.0.0"
+>>>>>>> b3e0702d002067d23c57adb55694b34892f04cdd
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
