@@ -1,10 +1,12 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
 import router from './router'
-import axios from 'axios'
+import vuetify from './plugins/vuetify'
+import { loadFonts } from './plugins/webfontloader'
 
-axios.defaults.baseURL = 'http://mapfinalbackend.test/'
+loadFonts()
 
-createApp(App).use(router).mount('#app')
-  
+createApp(App)
+  .use(router)
+  .use(vuetify)
+  .mount('#app')
