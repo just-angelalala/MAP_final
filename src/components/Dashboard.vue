@@ -1,74 +1,68 @@
 <template>
     <v-app>
-    <!-- Sidebar.vue component goes here -->
-    <v-navigation-drawer v-model="drawer" app mobile-break-point="sm">
-        <Sidebar />
-    </v-navigation-drawer>
+         
+        <v-navigation-drawer v-model="drawer" app mobile-break-point="sm">
+    <Sidebar />
+</v-navigation-drawer>
 
-    <v-app-bar app :dense="mobileView">
-        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+<v-app-bar app :dense="mobileView">
+    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Mindoro Auto Parts</v-toolbar-title>
+    <v-toolbar-title>Mindoro Auto Parts</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+    <v-spacer></v-spacer>
 
-        <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+    <v-btn icon>
+    <v-icon>mdi-magnify</v-icon>
+    </v-btn>
 
-        <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-        </v-btn>
+    <v-btn icon>
+    <v-icon>mdi-bell</v-icon>
+    </v-btn>
 
-        <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-    </v-app-bar>
+    <v-btn icon>
+    <v-icon>mdi-account</v-icon>
+    </v-btn>
 
-    <v-main style="padding-top: 64px;">
-        <v-container fluid style="background-color: navajowhite; height: calc(100vh - 64px); display: flex; flex-direction: column;">
-            <v-table>
-                <thead>
-                <tr>
-                    <th class="text-left">
-                    ID
-                    </th>
-                    <th class="text-left">
-                    Product
-                    </th>
-                    <th class="text-left">
-                    Description
-                    </th>
-                    <th class="text-left">
-                    Category
-                    </th>
-                    <th class="text-left">
-                    Quantity
-                    </th>
-                    <th class="text-left">
-                    Price
-                    </th>
-                </tr>
-                </thead>
-            </v-table>
+    <v-btn icon>
+    <v-icon>mdi-dots-vertical</v-icon>
+    </v-btn>
+</v-app-bar>
+      <v-app-bar app color="primary">
+        <v-container >
+          <v-app-bar-title class="white--text">Admin Interface</v-app-bar-title>
+          <v-spacer></v-spacer>
         </v-container>
-    </v-main>
+      </v-app-bar>
     </v-app>
-</template>
-
-<script>
-import Sidebar from "@/views/Sidebar";
+  </template>
+  
+  <script>
+  import axios from 'axios'
+  import Sidebar from "@/views/Sidebar";
 
 export default {
-    components: {
-    Sidebar
-    },
-    data() {
-    return {
-        drawer: null,
-        mobileView: false,
-    }
-    }}
-    </script>
-
-      
+components: {
+Sidebar
+},
+data() {
+return {
+    drawer: null,
+    mobileView: false,
+}
+}}
+  </script>
+  
+  <style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: #c6c6c6;
+    background-color: cover;
+    height: 100vh;
+    max-width: none;
+  }
+  
+  /* Add your custom styles here */
+  </style>
+  

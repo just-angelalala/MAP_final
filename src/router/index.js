@@ -1,19 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/HomeView.vue'
+import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import Sidebar from '../views/Sidebar.vue'
 import Dashboard from '../components/Dashboard.vue'
 import SalesOrder from '../components/SalesOrder.vue'
 import SalesHistory from '../components/SalesHistory.vue'
-import UserAccounts from '../components/UserAccounts.vue'
+import UserAccount from '../components/UserAccount.vue'
 import Product from '../components/Product.vue'
 import Home from '../components/Home.vue'
-// import admindashboard from '../views/Admin/Dashboard.vue'
 
 const routes = [
   {
     path: '/',
+    name: 'home',
     component: Home //lalagyan ng page
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup
   },
   {
     path: '/login',
@@ -48,7 +54,7 @@ const routes = [
   {
     path: '/user-account',
     name: 'user-account',
-    component: UserAccounts
+    component: UserAccount
   },
   {
     path: '/logout',

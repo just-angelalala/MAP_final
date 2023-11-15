@@ -1,85 +1,92 @@
 <template>
-    <!-- <table border="1">
-      <tr>
-          <th>
-              Name
-          </th>
-          <th>
-              Position
-          </th>
-          <th>
-              Contact Number
-          </th>
-          <th>
-              User Name
-          </th>
-          <th>
-              Password
-          </th>
-          <th>
-              Address
-          </th>
-      </tr>
-      <tr v-for="info in info">
-          <td>{{ info.Name }}</td>
-          <td>{{ info.Position }}</td>
-          <td>{{ info.ContactNumber }}</td>
-          <td>{{ info.UserName }}</td>
-          <td>{{ info.Password }}</td>
-          <td>{{ info.Address }}</td>
-      </tr>
-      
-    </table> -->
-      <v-container>
-        <!-- Hero Image for Employees -->
-        <v-img src="https://files.porsche.com/filestore/image/multimedia/none/RD-2023-Homepage-Banner-WW-TaycanPush-KW20/normal/c68103e7-ef29-11ed-8103-005056bbdc38;sN;twebp/porsche-normal.webp" height="400">
-        <!-- Content for the hero section for employees -->
-        </v-img>
-    
-        <!-- Value Proposition for Employees -->
-        <v-row justify="center">
-          <v-col cols="12" md="8">
-            <v-card class="pa-5 text-center">
-              <h2 class="display-2">Your Partner in Auto Parts Supply</h2>
-            </v-card>
-          </v-col>
-        </v-row>
-    
-        <!-- Description for Employees -->
-        <v-row justify="center">
-          <v-col cols="12" md="8">
-            <v-card class="pa-3">
-              <p>Your success, our commitment. We're not just a supplier; we're your unwavering partner in delivering auto parts swiftly and efficiently. Our robust supply network and unwavering commitment ensure your shop always has the right parts precisely when you need them, powering your business to new heights of excellence.</p>
-            </v-card>
-          </v-col>
-        </v-row>
-    
-        <!-- Business Contact Requests and Shop Supply Services -->
-        <v-row justify="center">
-          <v-col cols="12" md="8">
-            <v-card>
-              <!-- Include sections for business contact requests and shop supply services using Vuetify components -->
-            </v-card>
-          </v-col>
-        </v-row>
-          
-        <!-- Use router-link to navigate to the login page -->
-        <router-link to="/login" class="text-decoration-none">
-          <v-btn color="blue"  style="min-width: 100px; margin: 0 auto; display: block;">Log in</v-btn>
-        </router-link>
-      </v-container>
-    </template>
-    
-    <script>
-    // Import the Login component from the views directory
-  import Login from '../views/Login.vue' // Adjust the path based on your project structure
-  // import axios from 'axios';
-  
-    export default {
-      components: {
-        Login // Register the Login component
-      },
-  
-  }
-  </script>
-    
+  <header>
+       <h1>Welcome to Your Website</h1>
+   </header>
+
+
+   <v-container class="landing">
+     <v-row  justify="center" style="font-size: 25px; color:white">
+       <v-col cols="12" md="8">
+         <v-card class="pa-5 text-center" color="transparent">
+           <h2 class="display-2">Your Partner in Auto Parts Supply</h2>
+         </v-card>
+       </v-col>
+     </v-row>
+ 
+     <!-- Description for Employees -->
+     <v-row style="font-size: 25px; margin-left: 20px;">
+       <v-col cols="12" md="5">
+         <v-card class="pa-3" color="transparent">
+           <p>Your success, our commitment. We're not just a supplier; we're your unwavering partner in delivering auto parts swiftly and efficiently.</p>
+         </v-card>
+       </v-col>
+     </v-row>
+ 
+     <!-- Business Contact Requests and Shop Supply Services -->
+     <v-row justify="center" style="font-size: 25px; margin-bottom: 10px;">
+       <v-col cols="12" md="5">
+         <v-card class="pa-3" color="transparent">
+           <p>Our robust supply network and unwavering commitment ensure your shop always has the right parts precisely when you need them, powering your business to new heights of excellence.</p>
+         </v-card>
+       </v-col>
+     </v-row>
+       
+     <!-- Use router-link to navigate to the login page -->
+     <router-link to="/signup" class="text-decoration-none">
+       <nav>
+           <a href="<?php echo base_url('Signup'); ?>" class="btn">Sign up</a>
+           <!-- <a href="<?php echo base_url('Login'); ?> " class="btn btn-login">Sign in</a> -->
+       </nav>
+     </router-link>
+     <router-link to="/login" class="text-decoration-none">
+       <nav>
+           <!-- <a href="<?php echo base_url('Register'); ?>" class="btn">Sign up</a> -->
+           <a href="<?php echo base_url('Login'); ?> " class="btn btn-login">Sign in</a>
+       </nav>
+     </router-link>
+   </v-container>
+ </template>
+ 
+ <script>
+ // Import the Login component from the views directory
+ import axios from 'axios'
+ import Login from '../views/Login.vue' // Adjust the path based on your project structure
+ 
+ export default {
+   components: {
+     Login // Register the Login component
+   },
+   // Your component's script
+ };
+ </script>
+  <style scoped>
+  .landing{
+    background: url('../assets/last.png');
+    background-size: cover;
+    height: 100vh;
+    max-width: max-content;
+    text-align: center;
+    color:antiquewhite;
+}
+header {
+           background-color: #333;
+           padding: 10px;
+           text-align: center;
+           color: white;
+       }
+
+       .btn {
+           display: inline-block;
+           padding: 10px 20px;
+           font-size: 16px;
+           text-decoration: none;
+           background-color: #3498db;
+           color: #fff;
+           border-radius: 5px;
+       }
+
+       .btn-login {
+           background-color: #2ecc71;
+       }
+</style>
+ 
