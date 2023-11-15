@@ -1,9 +1,4 @@
 <template>
-  <header>
-       <h1>Welcome to Your Website</h1>
-   </header>
-
-
    <v-container class="landing">
      <v-row  justify="center" style="font-size: 25px; color:white">
        <v-col cols="12" md="8">
@@ -32,18 +27,19 @@
      </v-row>
        
      <!-- Use router-link to navigate to the login page -->
-     <router-link to="/signup" class="text-decoration-none">
-       <nav>
-           <a href="<?php echo base_url('Signup'); ?>" class="btn">Sign up</a>
-           <!-- <a href="<?php echo base_url('Login'); ?> " class="btn btn-login">Sign in</a> -->
-       </nav>
-     </router-link>
-     <router-link to="/login" class="text-decoration-none">
-       <nav>
-           <!-- <a href="<?php echo base_url('Register'); ?>" class="btn">Sign up</a> -->
-           <a href="<?php echo base_url('Login'); ?> " class="btn btn-login">Sign in</a>
-       </nav>
-     </router-link>
+     <div class="auth-links">
+        <router-link to="/signup" class="text-decoration-none">
+          <nav>
+            <a href="<?php echo base_url('Signup'); ?>" class="btn">Sign up</a>
+          </nav>
+        </router-link>
+        <router-link to="/login" class="text-decoration-none">
+          <nav>
+            <a href="<?php echo base_url('Login'); ?>" class="btn btn-login">Log In</a>
+          </nav>
+        </router-link>
+      </div>
+
    </v-container>
  </template>
  
@@ -75,6 +71,15 @@ header {
            color: white;
        }
 
+       .auth-links {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        nav {
+          margin-right: 10px; /* Adjust as needed for spacing */
+        }
        .btn {
            display: inline-block;
            padding: 10px 20px;

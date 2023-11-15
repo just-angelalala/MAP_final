@@ -1,7 +1,7 @@
 <template>
-    <v-container >
+  <v-container >
     <v-form @submit.prevent="register">
-      <h2>Registration Form</h2>
+      <h4>Registration Form</h4>
   
       <v-text-field
         v-model="formData.name"
@@ -16,6 +16,8 @@
         required
         :error-messages="validationErrors.contactNumber"
         type="number"
+        hide-details="true"
+        counter="false" 
       ></v-text-field>
   
       <v-text-field
@@ -60,7 +62,7 @@
         label="Address"
         required
         :error-messages="validationErrors.address"
-        rows="4"
+        rows="2"
       ></v-textarea>
       
           <v-btn type="submit" @click="register">Signup</v-btn>
@@ -109,95 +111,10 @@
   };
   </script>
   
-  <!-- <template>
-      <v-container class="log">
-          <v-row style="margin-top: 180px;" align="center" justify="center" >
-              <v-col cols="16" sm="8">
-                <v-card class="elevation-6 mt-10" style="color#801623; opacity:85%" >
-                      <v-row>
-                        <v-col cols="12" md="6">
-                          <v-card-text class="mt-8">
-                            
-                          </v-card-text>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <v-card-text class="mt-12">
-                            <h4
-                              class="text-center" style="font-size: x-large;"
-                            >Login in to Your Account</h4> <br>
-                            <h6
-                              class="text-center  grey--text " style="font-size: x-small;"
-                            >The only way to do great work is to love what you do.</h6>
-                            <v-row align="center" justify="center">
-                              <v-col cols="12" sm="8">
-                               
-                              <v-text-field
-                                label="Email"
-                                outlined
-                                dense
-                                color="blue"
-                                autocomplete="false"
-                               class="mt-16"
-                              />
-                              <v-text-field
-                                label="Password"
-                                outlined
-                                dense
-                                color="blue"
-                                autocomplete="false"
-                               type="password"
-                              />
-                             
-                                <router-link to="/dashboard" class="text-decoration-none">
-                                  <v-btn color="#5D1E87"  style="min-width: 100px; margin: 0 auto; display: block;">Sign up</v-btn>
-                                </router-link>
-  
-                              </v-col>
-                            </v-row>
-                          </v-card-text>
-                        </v-col>
-                      </v-row>
-                </v-card>
-              </v-col>
-          </v-row>
-      </v-container>
-    </template>
-    
-    <script>
-    export default {
-      data: () => ({
-        step: 1
-      }),
-      props: {
-        source: String
-      } 
-    }
-    </script> -->
-    
-    <!-- <style scoped>
-    .v-application .rounded-bl-xl {
-        border-bottom-left-radius: 300px !important;
-    }
-    .v-application .rounded-br-xl {
-        border-bottom-right-radius: 300px !important;
-    }
-    .log{
-        background: url('../assets/last.png');
-        background-size: cover;
-        height: 100vh;
-        max-width:none;
-  
-    }
-    #h4{
-      color:#5D1E87;
-    }
-    </style> -->
     <style scoped>
          .v-container {
               font-family: Arial, sans-serif;
               background-color: #f4f4f4;
-              /* margin: 0;
-              padding: 0; */
               display: flex;
               justify-content: center;
               align-items: center;
@@ -207,28 +124,28 @@
   
           .v-form {
               background-color: #fff;
-              padding: 20px;
+              padding: 10px;
               border-radius: 8px;
               box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
               max-width: none;
               
           }
   
-          h2 {
+          h4 {
               text-align: center;
               color: #333;
           }
   
           label {
               display: block;
-              margin: 10px 0 5px;
+              margin: 5px 0 5px;
               color: #555;
           }
   
           .v-btn, select, textarea {
               width: 100%;
-              padding: 8px;
-              margin-bottom: 10px;
+              padding: 5px;
+              margin-bottom: 5px;
               box-sizing: border-box;
               border: 1px solid #ccc;
               border-radius: 4px;
