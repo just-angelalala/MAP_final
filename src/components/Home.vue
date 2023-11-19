@@ -28,14 +28,10 @@
        
      <!-- Use router-link to navigate to the login page -->
      <div class="auth-links">
-        <router-link to="/signup" class="text-decoration-none">
+
+        <router-link to="/Login" class="text-decoration-none">
           <nav>
-            <a href="<?php echo base_url('Signup'); ?>" class="btn">Sign up</a>
-          </nav>
-        </router-link>
-        <router-link to="/login" class="text-decoration-none">
-          <nav>
-            <a href="<?php echo base_url('Login'); ?>" class="btn btn-login">Log In</a>
+            <a href="<?php echo base_url('Login'); ?>" class="btn btn-login" >Log In</a>
           </nav>
         </router-link>
       </div>
@@ -46,7 +42,8 @@
  <script>
  // Import the Login component from the views directory
  import axios from 'axios'
- import Login from '../views/Login.vue' // Adjust the path based on your project structure
+ import Login from '../views/Login.vue'
+// Adjust the path based on your project structure
  
  export default {
    components: {
@@ -55,6 +52,10 @@
    // Your component's script
  };
  </script>
+
+
+
+
   <style scoped>
   .landing{
     background: url('../assets/last.png');

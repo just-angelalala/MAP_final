@@ -15,35 +15,22 @@
 
           <v-form @submit.prevent="login">
             <v-text-field
-              v-model="userEmail"
+              v-model="formData.UserEmail"
               label="Email"
-              :error-messages="validationErrors.userEmail"
+              :error-messages="validationErrors.UserEmail"
               type="email"
               required
             ></v-text-field>
 
             <v-text-field
-              v-model="userPassword"
+              v-model="formData.UserPassword"
               label="Password"
-              :error-messages="validationErrors.userPassword"
+              :error-messages="validationErrors.UserPassword"
               type="password"
               required
             ></v-text-field>
-            <router-link to="/dashboard" class="text-decoration-none">
-                <v-btn type="submit" color="primary">Log In</v-btn>
-            </router-link>
+            <v-btn @click="login" color="primary">Log In</v-btn>
           </v-form>
-
-          <v-divider></v-divider>
-
-          <v-row justify="center">
-            <v-col>
-              <span>Don't have an account?</span>
-              <router-link to="/signup" class="text-decoration-none">
-              <v-btn @click="goToSignup" text>Sign Up</v-btn>
-            </router-link>
-            </v-col>
-          </v-row>
         </v-card>
       </v-col>
     </v-row>
@@ -51,53 +38,54 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      userEmail: '',
-      userPassword: '',
+      UserEmail: '',
+      UserPassword: '',
       validationErrors: {},
-      flashMsg: ''
+      flashMsg: '',
     };
   },
   methods: {
-    async loginAuth() {
-      try {
-        const response = await axios.post("/login", {
-          UserName:this.userEmail, // corrected from userName to userEmail
-          Password:this.userPassword
-        });
+    async login() {
+      this.validationErrors = {}; // Reset errors
 
-        // Assuming you have some logic to handle the response here
-        console.log(response);
+      const requiredFields = ['UserEmail', 'UserPassword'];
 
+      requiredFields.forEach((field) => {
+        if (!this[field]) {
+          this.validationErrors[field] = 'This field is required.';
+        }
+      });
 
-        switch (Position) {
-                    case 'Admin':
-                        this.$router.push('/admin/dashboard');
-                        break;
-                    case 'Staff':
-                        this.$router.push('/staff/dashboard');
-                        break;
-                    // Handle other roles if needed
-                    default:
-                        this.$router.push('/login');
-                }
-        // After successful login, you may want to redirect to another page
-        // Use router or other navigation methods
-      } catch (error) {
-        // Handle errors here
-        console.error(error);
+      if (Object.keys(this.validationErrors).length === 0) {
+        try {
+          const response = await axios.post('/api/signin', {
+            UserEmail: this.UserEmail,
+            UserPassword: this.UserPassword,
+          });
+
+          if (response.data.redirect) {
+            // Use Vue Router to navigate after successful login
+            this.$router.push(response.data.redirect);
+          } else if (response.data.error) {
+            // Handle error messages
+            this.flashMsg = response.data.error;
+          }
+        } catch (error) {
+          console.error('Login failed:', error.message);
+          // Handle errors or display an error message to the user
+        }
       }
     },
-    goToSignup() {
-      // Redirect to the registration page
-      // Use router or other navigation methods
-    }
-  }
+  },
 };
 </script>
+
+
 
 
 <style scoped>

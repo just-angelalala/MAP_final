@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Signup from '../views/Signup.vue'
-import Login from '../views/Login.vue'
+import Register from '../components/Register.vue'
+import Login from '../views/Login.vue';
 import Sidebar from '../views/Sidebar.vue'
 import Dashboard from '../components/Dashboard.vue'
 import SalesOrder from '../components/SalesOrder.vue'
@@ -17,15 +17,15 @@ const routes = [
     component: Home //lalagyan ng page
   },
   {
-    path: '/signup',
-    name: 'signup',
-    component: Signup
+    path: '/register',
+    name: 'register',
+    component: Register
   },
   {
     path: '/login',
     name: 'login',
     component: Login
-  },
+  },  
   {
     path: '/sidebar',
     name: 'sidebar',
