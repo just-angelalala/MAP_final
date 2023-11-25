@@ -1,5 +1,6 @@
 <template>
     <v-app>
+    <!-- Sidebar.vue component goes here -->
     <v-navigation-drawer v-model="drawer" app mobile-break-point="sm">
         <Sidebar />
     </v-navigation-drawer>
@@ -20,16 +21,12 @@
         </v-btn>
 
         <v-btn icon>
-        <v-icon>mdi-account</v-icon>
-        </v-btn>
-
-        <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
     </v-app-bar>
 
     <v-main style="padding-top: 64px;">
-        <v-container fluid style="background-color: #c6c6c6; height: calc(100vh - 64px); display: flex; flex-direction: column;">
+        <v-container fluid style="background-color: palegoldenrod; height: calc(100vh - 64px); display: flex; flex-direction: column;">
             <v-table>
                 <thead>
                 <tr>

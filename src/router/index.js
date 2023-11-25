@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Register from '../components/Register.vue'
-import Login from '../views/Login.vue';
+import Login from '../views/Login.vue'
 import Sidebar from '../views/Sidebar.vue'
 import Dashboard from '../components/Dashboard.vue'
 import SalesOrder from '../components/SalesOrder.vue'
@@ -9,23 +8,18 @@ import SalesHistory from '../components/SalesHistory.vue'
 import UserAccount from '../components/UserAccount.vue'
 import Product from '../components/Product.vue'
 import Home from '../components/Home.vue'
+// import admindashboard from '../views/Admin/Dashboard.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
     component: Home //lalagyan ng page
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register
   },
   {
     path: '/login',
     name: 'login',
     component: Login
-  },  
+  },
   {
     path: '/sidebar',
     name: 'sidebar',

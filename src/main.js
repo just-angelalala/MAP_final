@@ -4,10 +4,11 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 
-import axios from 'axios'
 
+
+import axios from 'axios'
 loadFonts()
-axios.defaults.baseURL = 'http://localhost:8080/'
+axios.defaults.baseURL = 'http://map_final.test/'
 
 createApp(App)
   .use(router)
