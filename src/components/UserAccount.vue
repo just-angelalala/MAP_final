@@ -29,60 +29,74 @@
       <v-container fluid>
         <v-row align="center" justify="center">
           <v-col >
-            <v-card class="elevation-6 mt-10" >
+            <v-card class="elevation-6 mt-5" height="auto">
               <v-row>
                 <v-col cols="" md="6">
-                  <v-card-text class="mt-12">
+                  <v-card-text class="mt-4">
                     <!-- Placeholder for an image or logo tagline -->
                   </v-card-text>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-card-text class="mt-12">
-                    <h2 class="text-center">Register New Account</h2>
-                    <h4 class="text-center grey--text">Do it with passion.</h4>
-                    <v-form @submit="registerUser">
+                  <v-card-text class="mt-2">
+                    <v-form @submit.prevent="registerUser" dense>
                       <v-text-field
+                        v-model="formData.Name"
                         label="Name"
                         outlined
-                        dense
                         color="blue"
                         autocomplete="false"
-                        class="mt-2"
+                        class="mt-1"
+                        dense
                       />
                       <v-text-field
+                        v-model="formData.Position"
+                        label="Position"
+                        outlined
+                        color="blue"
+                        autocomplete="false"
+                        class="mt-1"
+                        dense
+                      />
+                      <v-text-field
+                        v-model="formData.ContactNumber"
                         label="Contact Number"
                         outlined
-                        dense
                         color="blue"
                         autocomplete="false"
-                        class="mt-2"
+                        class="mt-1"
+                        dense
+                        :rules="contactNumberRules"
                       />
                       <v-text-field
+                        v-model="formData.Address"
                         label="Address"
                         outlined
-                        dense
                         color="blue"
                         autocomplete="false"
-                        type="password"
-                        class="mt-2"
+                        type="text"
+                        class="mt-1"
+                        dense
                       />
                       <v-text-field
-                        label="Username"
+                        v-model="formData.UserEmail"
+                        label="User Email"
                         outlined
-                        dense
                         color="blue"
                         autocomplete="false"
-                        class="mt-2"
+                        class="mt-1"
+                        dense
                       />
                       <v-text-field
+                        v-model="formData.UserPassword"
                         label="Password"
                         outlined
-                        dense
                         color="blue"
                         autocomplete="false"
-                        class="mt-2"
+                        class="mt-1"
+                        type="password"
+                        dense
                       />
-                      <v-btn color="blue" dark block @click="registerUser">Register</v-btn>
+                      <v-btn color="blue" dark block type="submit">Register</v-btn>
                     </v-form>
                   </v-card-text>
                 </v-col>
@@ -91,27 +105,96 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-alert
+        v-if="showErrorAlert"
+        type="error"
+        title="Registration Unsuccessful"
+        dismissible
+        transition="scale-transition"
+      >
+        <v-row align="center" justify="center">
+          <v-col>
+            <v-icon color="error">mdi-alert</v-icon>
+            <span class="ml-2">Registration Unsuccessful. Please check your information.</span>
+          </v-col>
+        </v-row>
+      </v-alert>
+
+      <!-- Success Alert -->
+      <v-alert
+        v-if="showSuccessAlert"
+        type="success"
+        title="Registration Successful"
+        dismissible
+        transition="scale-transition"
+      >
+        <v-row align="center" justify="center">
+          <v-col>
+            <v-icon color="success">mdi-check-circle</v-icon>
+            <span class="ml-2">Registration Successful. Welcome!</span>
+          </v-col>
+        </v-row>
+      </v-alert>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import axios from "axios";
 import Sidebar from "@/views/Sidebar";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
   },
   data() {
     return {
       drawer: null,
       mobileView: false,
-      // Your data properties here
+      showErrorAlert: false,
+      showSuccessAlert: false,
+      formData: {
+        Name: " ",
+        Position: " ",
+        ContactNumber: " ",
+        Address: " ",
+        UserEmail: " ",
+        UserPassword: " ",
+      },
     };
   },
+  computed: {
+    contactNumberRules() {
+      return [
+        (v) => !!v || "Contact Number is required",
+        (v) => (v && v.length === 11) || "Contact Number must be 11 characters",
+        // You can add more rules as needed
+      ];
+    },
+  },
   methods: {
-    registerUser() {
-      // Handle user registration logic here
+    async registerUser() {
+      try {
+        const response = await axios.post("api/register", this.formData);
+
+        console.log(response.data.message);
+        // Handle success, e.g., show a success message to the user
+
+        this.showSuccessAlert = true;
+
+        setTimeout(() => {
+          this.showSuccessAlert = false;
+        }, 3000);
+      } catch (error) {
+        console.error("Registration failed:", error);
+        // Handle errors, e.g., show error messages to the user
+
+        this.showErrorAlert = true;
+
+        setTimeout(() => {
+          this.showErrorAlert = false;
+        }, 3000); // Set the timeout to 3 seconds (adjust as needed)
+      }
     },
   },
 };

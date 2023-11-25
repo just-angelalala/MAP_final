@@ -8,7 +8,7 @@ import { loadFonts } from './plugins/webfontloader'
 
 import axios from 'axios'
 loadFonts()
-axios.defaults.baseURL = 'http://map_final.test/'
+axios.defaults.baseURL = 'http://revised.test/'
 
 createApp(App)
   .use(router)
