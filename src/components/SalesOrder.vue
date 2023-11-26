@@ -7,22 +7,11 @@
 
     <v-app-bar app :dense="mobileView">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
       <v-toolbar-title>Mindoro Auto Parts</v-toolbar-title>
-
       <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <v-btn icon><v-icon>mdi-magnify</v-icon></v-btn>
+      <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
+      <v-btn icon><v-icon>mdi-dots-vertical</v-icon></v-btn>
     </v-app-bar>
 
     <v-main style="padding-top: 64px;">
@@ -43,149 +32,275 @@
         </v-card>
 
         <!-- Sales Information -->
-        <v-card class="sales-card">
-          <v-card-title class="headline">Sales Information</v-card-title>
+        <v-card class="sales-card elevation-2">
+          <v-card-title class="headline mb-4">Sales Information</v-card-title>
           <v-card-text>
-            <v-data-table :headers="salesHeaders" :items="salesInformation" item-key="productID">
-              <template v-slot:top>
-                <v-toolbar flat>
-                  <v-divider class="mx-4" inset vertical></v-divider>
-                  <!-- Separate Input Fields -->
-                  <v-text-field v-model="newProduct.productID" label="Product ID"></v-text-field>
-                  <v-text-field v-model="newProduct.productName" label="Product Name"></v-text-field>
-                  <v-text-field v-model="newProduct.quantity" label="Quantity" type="number"></v-text-field>
-                  <v-text-field v-model="newProduct.price" label="Price" type="number"></v-text-field>
-                  <v-btn color="primary" @click="addProduct">Add</v-btn>
-                </v-toolbar>
-              </template>
-              <template v-slot:item="{ item, index }">
-                <v-list-item>
-                  <!-- Display each item as a list -->
-                  <v-list-item-content>
-                    <v-list-item-title>{{ item.productName }}</v-list-item-title>
-                    <v-list-item-subtitle>
-                      Product ID: {{ item.productID }} | Price: {{ item.price }} | Quantity: {{ item.totalQuantity }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <!-- Automatic Price Calculation -->
-                    <div>{{ calculateTotalPrice(item) }}</div>
-                    <v-btn color="primary" @click="updateProduct(index)">Update</v-btn>
-                    <v-btn color="secondary" @click="cancelProduct(index)">Cancel</v-btn>
-                  </v-list-item-action>
-                </v-list-item>
-              </template>
-            </v-data-table>
+            <v-row>
+              <!-- Left Side: User Input and Add Button -->
+              <v-col cols="12" md="6" class="px-4">
+                <v-form @submit.prevent="addProduct">
+                  <v-select
+                    v-model="newProduct.productName"
+                    :items="productNames"
+                    label="Product Name"
+                    outlined
+                    dense
+                    @change="updateProductDetails"
+                  ></v-select>
+
+                  <!-- Text fields for other product details -->
+                  <v-text-field v-model="newProduct.productID" label="Product ID" outlined dense readonly></v-text-field>
+                  <v-text-field v-model="newProduct.quantity" label="Quantity" type="number" min="1" outlined dense></v-text-field>
+                  <v-text-field v-model="newProduct.price" label="Price" type="number" outlined dense readonly></v-text-field>
+                  <v-btn color="primary" @click="addOrUpdateProduct" class="mt-3">
+                    {{ updateIndex !== null ? 'Update' : 'Add' }}
+                  </v-btn>
+                </v-form>
+              </v-col>
+
+              <!-- Right Side: List of Sales Information -->
+              <v-col cols="12" md="6" class="px-4">
+                <v-data-table :headers="salesHeaders" :items="salesInformation" item-key="productID" class="elevation-1">
+                  <template v-slot:item="{ item, index }">
+                    <v-row align="center">
+                      <v-col cols="8">
+                        <v-list-item class="py-1">
+                          <v-list-item-content>
+                            <v-list-item-title class="font-weight-bold">{{ item.productID }} - {{ item.productName }}</v-list-item-title>
+                            <v-list-item-subtitle>
+                              Price: {{ item.price }} | Quantity: {{ item.quantity }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-list-item-action>
+                          <v-btn color="primary" @click="updateProduct(index)" class="mr-1">Update</v-btn>
+                          <!-- Inside the v-btn in the v-data-table template -->
+                          <v-btn color="secondary" @click="cancelProduct(index)">Cancel</v-btn>
+
+                        </v-list-item-action>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </v-data-table>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
 
         <!-- Cart Details -->
         <v-card class="checkout-card">
-          <v-card-title class="headline">Cart Details</v-card-title>
           <v-card-actions>
             <v-btn color="success" @click="completeTransaction">Complete Transaction</v-btn>
           </v-card-actions>
         </v-card>
+
+        <v-alert
+          v-if="showErrorAlert"
+          type="error"
+          title=" Insert Product"
+          dismissible
+          transition="scale-transition"
+        >
+          <v-row align="center" justify="center">
+            <v-col>
+              <v-icon color="error">mdi-alert</v-icon>
+              <span class="ml-2">We got it all</span>
+            </v-col>
+          </v-row>
+        </v-alert>
       </v-container>
+
+
+      <v-dialog v-model="showReceiptModal" max-width="800">
+  <v-card>
+    <v-card-title>
+      <span class="text-h5">Receipt Details</span>
+    </v-card-title>
+
+    <v-divider></v-divider>
+
+    <v-card-text>
+      <div>
+        <strong>Customer Name:</strong> {{ customerName }}
+      </div>
+      <div>
+        <strong>Customer Address:</strong> {{ customerAddress }}
+      </div>
+      <div>
+        <strong>Sales Date:</strong> {{ getCurrentDate() }}
+      </div>
+      <div>
+        <strong>Payment Amount:</strong> {{ calculatePaymentAmount() }}
+      </div>
+      <div>
+        <strong>Change Amount:</strong> {{ calculateChangeAmount() }}
+      </div>
+      <div>
+        <strong>Total Amount:</strong> {{ calculateTotalAmount() }}
+      </div>
+
+      <span class="text-h5">Thank you for shopping!</span>
+    </v-card-text>
+
+    <v-divider></v-divider>
+
+    <v-card-actions>
+      <v-btn color="primary" @click="closeReceiptModal">Close</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
+
     </v-main>
   </v-app>
 </template>
 
 <script>
+import axios from 'axios';
 import Sidebar from "@/views/Sidebar";
 
 export default {
   components: {
     Sidebar,
   },
+  mounted() {
+    // Call the fetchProducts method when the component is mounted
+    this.fetchProducts();
+  },
   data() {
     return {
       drawer: null,
       mobileView: false,
-      customerName: "",
-      customerAddress: "",
-      scannedProduct: "",
-      cart: [],
-      salesHeaders: [
-        { text: "Product ID", value: "productID" },
-        { text: "Product Name", value: "productName" },
-        { text: "Price", value: "price" },
-        { text: "Quantity", value: "totalQuantity" },
-        { text: "Total Price", value: "totalPrice" },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
-      salesInformation: [
-        // Your initial sales information data here
-      ],
+      customerName: '',
+      customerAddress: '',
       newProduct: {
-        productName: "",
-        productID: "",
-        quantity: 0,
+        productName: '',
+        productID: '',
+        quantity: 1,
         price: 0,
       },
+      products: [], // Your product data from the fetch
+      salesInformation: [],
+      updateIndex: null,
+      showErrorAlert: false, // Added to control the visibility of the error alert
     };
   },
+  watch: {
+    'newProduct.productName': 'updateProductDetails',
+    'newProduct.quantity': 'updateProductDetails',
+  },
   computed: {
-    totalItems() {
-      return this.cart.reduce((total, item) => total + item.quantity, 0);
+    // Extracting unique product names for the dropdown
+    productNames() {
+      return this.products.map((product) => product.ProductName);
     },
-    totalPrice() {
-      return this.cart.reduce((total, item) => total + item.quantity * item.price, 0);
+    salesHeaders() {
+      // Define your sales table headers here
+      return [
+        { text: 'Product', value: 'productName' },
+        { text: 'Price', value: 'price' },
+        { text: 'Quantity', value: 'quantity' },
+        { text: 'Actions', value: 'actions' },
+      ];
     },
   },
   methods: {
-    addToCart() {
-      const product = this.products.find((p) => p.name === this.scannedProduct);
-      if (product) {
-        const cartItem = this.cart.find((item) => item.name === this.scannedProduct);
-        if (cartItem) {
-          cartItem.quantity++;
+    async fetchProducts() {
+      try {
+        // Make a POST request to your CodeIgniter API endpoint using axios
+        const response = await axios.post('api/getProductsAndCategories');
+
+        // Axios will throw an error for non-2xx status codes, so no need to manually check
+        // Parse the JSON data from the response
+        const data = response.data;
+
+        // Update the products data property with the fetched data
+        this.products = data;
+      } catch (error) {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+      }
+    },
+
+    updateProductDetails() {
+      const selectedProduct = this.products.find(
+        (product) => product.ProductName === this.newProduct.productName
+      );
+
+      if (selectedProduct) {
+        this.newProduct.productID = selectedProduct.ProductID;
+        this.newProduct.price = selectedProduct.Price * this.newProduct.quantity;
+      }
+    },
+
+    addOrUpdateProduct() {
+      if (this.updateIndex !== null) {
+        // If updateIndex is not null, it means an item is being updated
+        // Update the existing item in salesInformation array
+        this.salesInformation.splice(this.updateIndex, 1, { ...this.newProduct });
+
+        // Reset newProduct and updateIndex for the next entry
+        this.resetNewProduct();
+      } else {
+        // If updateIndex is null, it means a new item is being added
+        // Check if productName is not null and not just whitespace before adding the new product
+        if (this.newProduct.productName !== null && this.newProduct.productName.trim() !== '') {
+          // Add the newProduct to salesInformation
+          this.salesInformation.push({ ...this.newProduct });
+
+          // Optionally, you can clear the newProduct values for the next entry
+          this.resetNewProduct();
         } else {
-          this.cart.push({ ...product, quantity: 1 });
+          // Handle the case when productName is null or contains only whitespace
+          this.showErrorAlert = true;
         }
       }
-      this.scannedProduct = "";
     },
-    removeFromCart(index) {
-      this.cart.splice(index, 1);
-    },
-    completeTransaction() {
-      // Add logic for completing the transaction (e.g., send data to the backend)
-      const transactionData = {
-        customer: { name: this.customerName, address: this.customerAddress },
-        products: this.cart,
-      };
-      console.log("Transaction completed:", transactionData);
-      // Reset the cart and customer information
-      this.cart = [];
-      this.customerName = "";
-      this.customerAddress = "";
-    },
-    addProduct() {
-      // Add logic to add a new product to the salesInformation array
-      // Ensure that you calculate the total price based on quantity
-      this.newProduct.totalPrice = this.calculateTotalPrice(this.newProduct);
 
-      // Add the new product to the salesInformation array
-      this.salesInformation.push({ ...this.newProduct });
-
-      // Reset newProduct for the next entry
-      this.newProduct = {
-        productName: "",
-        productID: "",
-        quantity: 0,
-        price: 0,
-      };
-    },
     updateProduct(index) {
-      // Add logic to update the existing product in the salesInformation array
-      // Ensure that you calculate the total price based on quantity
-      this.salesInformation[index].totalPrice = this.calculateTotalPrice(this.salesInformation[index]);
+      // Set the updateIndex to the selected index
+      this.updateIndex = index;
+
+      // Get the selected product from the salesInformation array
+      const selectedProduct = this.salesInformation[index];
+
+      // Update the newProduct data property with the selected product's information
+      this.newProduct.productName = selectedProduct.productName;
+      this.newProduct.productID = selectedProduct.productID;
+      this.newProduct.quantity = selectedProduct.quantity;
+      this.newProduct.price = selectedProduct.price;
     },
-    calculateTotalPrice(product) {
-      // Add logic to calculate the total price based on quantity
-      return product.quantity * product.price;
+
+    cancelProduct(index) {
+      // Remove the product at the specified index from the salesInformation array
+      this.salesInformation.splice(index, 1);
+
+      // Reset newProduct and updateIndex for the next entry
+      this.resetNewProduct();
     },
+
+    resetNewProduct() {
+      this.newProduct.productName = '';
+      this.newProduct.productID = '';
+      this.newProduct.quantity = 1;
+      this.newProduct.price = 0;
+      this.updateIndex = null;
+      this.showErrorAlert = false; // Reset error alert when resetting new product
+    },
+
+    completeTransaction() {
+      // Add your logic for completing the transaction here
+      // You can use this.salesInformation to access the selected products
+      this.showReceiptModal = true;
+      console.log('Transaction completed:', this.salesInformation);
+    },
+
+
+
+
+
   },
 };
 </script>

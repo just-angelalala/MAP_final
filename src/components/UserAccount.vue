@@ -154,12 +154,12 @@ export default {
       showErrorAlert: false,
       showSuccessAlert: false,
       formData: {
-        Name: " ",
-        Position: " ",
-        ContactNumber: " ",
-        Address: " ",
-        UserEmail: " ",
-        UserPassword: " ",
+        Name: "",
+        Position: "",
+        ContactNumber: "",
+        Address: "",
+        UserEmail: "",
+        UserPassword: "",
       },
     };
   },
