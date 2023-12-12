@@ -197,3 +197,37 @@
   }
   </style>
   
+
+
+  
+  // async completeTransaction() {
+    //   try {
+    //     // Make a POST request to your server endpoint with the salesInformation data
+    //     const response = await axios.post('api/addTransaction', {
+    //       customerName: this.customerName,
+    //       customerAddress: this.customerAddress,
+    //       salesInformation: this.salesInformation,
+    //     });
+
+    //     // Handle the response if needed
+    //     console.log('Transaction completed successfully:', response.data);
+
+    //     // Optionally, you can reset the form or perform any other actions
+    //     this.resetForm();
+    //   } catch (error) {
+    //     // Handle errors here
+    //     console.error('Error completing transaction:', error);
+    //   }
+    // },
+
+    // resetForm() {
+    //   // Reset form-related properties
+    //   this.customerName = '';
+    //   this.customerAddress = '';
+    //   this.salesInformation = [];
+    //   this.newProduct.productName = '';
+    //   this.newProduct.productID = '';
+    //   this.newProduct.quantity = 1;
+    //   this.newProduct.price = 0;
+    //   this.updateIndex = null;
+    // },

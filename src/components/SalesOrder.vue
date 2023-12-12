@@ -17,19 +17,21 @@
     <v-main style="padding-top: 64px;">
       <v-container fluid>
         <!-- Customer Information -->
-        <v-card class="customer-card">
-          <v-card-title class="headline">Customer Information</v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="customerName" label="Customer Name" outlined dense></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="customerAddress" label="Customer Address" outlined dense></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <v-card class="customer-card" @click="insertCustomerInfo">
+            <v-card-title class="headline">
+              <v-btn text @click.stop="insertCustomerInfo">Customer Information</v-btn>
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field v-model="customerName" label="Customer Name" outlined dense></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field v-model="customerAddress" label="Customer Address" outlined dense></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
 
         <!-- Sales Information -->
         <v-card class="sales-card elevation-2">
@@ -37,121 +39,46 @@
           <v-card-text>
             <v-row>
               <!-- Left Side: User Input and Add Button -->
-              <v-col cols="12" md="6" class="px-4">
-                <v-form @submit.prevent="addProduct">
-                  <v-select
-                    v-model="newProduct.productName"
-                    :items="productNames"
-                    label="Product Name"
-                    outlined
-                    dense
-                    @change="updateProductDetails"
-                  ></v-select>
+              <v-row>
+      <v-col>
+        <div v-if="salesTransactionNumber">
+              Sales Transaction Number: {{ salesTransactionNumber }}
+        </div>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Product Name</th>
+                <th class="text-left">Price</th>
+                <th class="text-left">Quantity</th>
+                <th class="text-left">Subtotal</th>
+                
 
-                  <!-- Text fields for other product details -->
-                  <v-text-field v-model="newProduct.productID" label="Product ID" outlined dense readonly></v-text-field>
-                  <v-text-field v-model="newProduct.quantity" label="Quantity" type="number" min="1" outlined dense></v-text-field>
-                  <v-text-field v-model="newProduct.price" label="Price" type="number" outlined dense readonly></v-text-field>
-                  <v-btn color="primary" @click="addOrUpdateProduct" class="mt-3">
-                    {{ updateIndex !== null ? 'Update' : 'Add' }}
-                  </v-btn>
-                </v-form>
-              </v-col>
+                <!-- Add more headers as needed -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in tableData" :key="index">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.quantity * item.price }}</td>
+                <!-- Add more columns as needed -->
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-col>
+    </v-row>
 
-              <!-- Right Side: List of Sales Information -->
-              <v-col cols="12" md="6" class="px-4">
-                <v-data-table :headers="salesHeaders" :items="salesInformation" item-key="productID" class="elevation-1">
-                  <template v-slot:item="{ item, index }">
-                    <v-row align="center">
-                      <v-col cols="8">
-                        <v-list-item class="py-1">
-                          <v-list-item-content>
-                            <v-list-item-title class="font-weight-bold">{{ item.productID }} - {{ item.productName }}</v-list-item-title>
-                            <v-list-item-subtitle>
-                              Price: {{ item.price }} | Quantity: {{ item.quantity }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-col>
-                      <v-col cols="4">
-                        <v-list-item-action>
-                          <v-btn color="primary" @click="updateProduct(index)" class="mr-1">Update</v-btn>
-                          <!-- Inside the v-btn in the v-data-table template -->
-                          <v-btn color="secondary" @click="cancelProduct(index)">Cancel</v-btn>
-
-                        </v-list-item-action>
-                      </v-col>
-                    </v-row>
-                  </template>
-                </v-data-table>
-              </v-col>
+            
             </v-row>
           </v-card-text>
         </v-card>
 
-        <!-- Cart Details -->
-        <v-card class="checkout-card">
-          <v-card-actions>
-            <v-btn color="success" @click="completeTransaction">Complete Transaction</v-btn>
-          </v-card-actions>
-        </v-card>
-
-        <v-alert
-          v-if="showErrorAlert"
-          type="error"
-          title=" Insert Product"
-          dismissible
-          transition="scale-transition"
-        >
-          <v-row align="center" justify="center">
-            <v-col>
-              <v-icon color="error">mdi-alert</v-icon>
-              <span class="ml-2">We got it all</span>
-            </v-col>
-          </v-row>
-        </v-alert>
+        
+       
       </v-container>
-
-
-      <v-dialog v-model="showReceiptModal" max-width="800">
-  <v-card>
-    <v-card-title>
-      <span class="text-h5">Receipt Details</span>
-    </v-card-title>
-
-    <v-divider></v-divider>
-
-    <v-card-text>
-      <div>
-        <strong>Customer Name:</strong> {{ customerName }}
-      </div>
-      <div>
-        <strong>Customer Address:</strong> {{ customerAddress }}
-      </div>
-      <div>
-        <strong>Sales Date:</strong> {{ getCurrentDate() }}
-      </div>
-      <div>
-        <strong>Payment Amount:</strong> {{ calculatePaymentAmount() }}
-      </div>
-      <div>
-        <strong>Change Amount:</strong> {{ calculateChangeAmount() }}
-      </div>
-      <div>
-        <strong>Total Amount:</strong> {{ calculateTotalAmount() }}
-      </div>
-
-      <span class="text-h5">Thank you for shopping!</span>
-    </v-card-text>
-
-    <v-divider></v-divider>
-
-    <v-card-actions>
-      <v-btn color="primary" @click="closeReceiptModal">Close</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
-
 
     </v-main>
   </v-app>
@@ -180,6 +107,7 @@ export default {
         productID: '',
         quantity: 1,
         price: 0,
+
       },
       products: [], // Your product data from the fetch
       salesInformation: [],

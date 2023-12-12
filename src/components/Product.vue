@@ -25,35 +25,48 @@
         </v-app-bar>
 
         <v-main style="padding-top: 64px;">
-            <v-container fluid style="background-color: aquamarine; height: calc(100vh - 64px); display: flex; flex-direction: column;">
-                <v-table>
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th class="text-left">ID</th>
-                                <th class="text-left">Product</th>
-                                <th class="text-left">Description</th>
-                                <th class="text-left">Category</th>
-                                <th class="text-left">Quantity</th>
-                                <th class="text-left">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="product in products" :key="product.ID">
-                                <td class="text-left">{{ product.ProductID }}</td>
-                                <td class="text-left">{{ product.ProductName }}</td>
-                                <td class="text-left">{{ product.ProductDescription }}</td>
-                                <td class="text-left">{{ product.CategoryName }}</td>
-                                <td class="text-left">{{ product.Quantity }}</td>
-                                <td class="text-left">{{ product.Price }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-table>
+
+            <v-container fluid style="height: calc(100vh - 64px); display: flex; flex-direction: row;">
+
+                
+                <div style="flex: 1; margin-right: 20px;">
+                    <h1>Add Product</h1>
+                    <v-form>
+                        <v-row no-gutters>
+                            <v-col cols="12">
+                                <v-text-field label="Product Name" density="compact" variant="outlined" v-model="newProduct.ProductName"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field label="Product Description" density="compact" variant="outlined" v-model="newProduct.ProductDescription"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-select label="Category" density="compact" variant="outlined" v-model="newProduct.CategoryName" :items="category"></v-select>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field label="Quantity" density="compact" variant="outlined" v-model="newProduct.Quantity"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field label="Price" density="compact" variant="outlined" v-model="newProduct.Price"></v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-btn @click="addProduct">Add Product</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </div>
+                <div style="flex: 1; border: 1px solid #ccc; border-radius: 8px; overflow: hidden;">
+                    <v-data-table-virtual
+                        :headers="headers"
+                        :items="products"
+                        height="600"
+                    ></v-data-table-virtual>
+                       </div>
             </v-container>
         </v-main>
     </v-app>
 </template>
+
+
 
 <script>
 import axios from 'axios'; // Import axios library
@@ -68,29 +81,130 @@ export default {
             drawer: null,
             mobileView: false,
             products: [],
+                headers:[
+                  {
+                    title: "Product Name",
+                    key: "ProductName",
+                  },
+                  {
+                    title: "Quantity",
+                    key: "Quantity",
+                  },
+                  {
+                    title: "Price",
+                    key: "Price",
+                  } ,
+                  {
+                    title: "Status",
+                    key: "Status",
+                  } ,
+                  
+                ],
+            newProduct: {
+                ProductName: '',
+                ProductDescription: '',
+                CategoryName: '',
+                Quantity: 0,
+                Price: 0,
+                categoryID: null,
+            },
+            category: [],
         };
     },
-    mounted() {
-        // Call the fetchProducts method when the component is mounted
-        this.fetchProducts();
+    mounted() {// function laman neto
+        // Fetch categories when the component is mounted
+        this.fetchCategories();
+        this.displayProducts();
     },
     methods: {
-        async fetchProducts() {
+        async fetchCategories() {
             try {
-                // Make a POST request to your CodeIgniter API endpoint using axios
-                const response = await axios.post('api/getProductsAndCategories');
-                
-                // Axios will throw an error for non-2xx status codes, so no need to manually check
-                // Parse the JSON data from the response
-                const data = response.data;
-
-                // Update the products data property with the fetched data
-                this.products = data;
+                const response = await axios.get('/api/getAllCategories'); // Replace 'your_controller' with the actual controller name
+                // Update the categories data property with the fetched data
+                this.category = response.data;
             } catch (error) {
-                // Handle errors here
-                console.error('Error fetching data:', error);
+                console.error('Error fetching categories:', error);
             }
         },
+        async addProduct(){
+            try {
+                const formData = new FormData();
+                formData.append('ProductName', this.newProduct.ProductName)
+                formData.append('ProductDescription', this.newProduct.ProductDescription)
+                formData.append('CategoryName', this.newProduct.CategoryName)
+                formData.append('Price',this.newProduct.Price)
+                formData.append('Quantity',Number(this.newProduct.Quantity))
+
+                const response = await axios.post('api/addProduct', formData)
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async displayProducts(){
+            try {
+                const response = await axios.get('/api/displayProducts'); // Replace 'your_controller' with the actual controller name
+                // Update the categories data property with the fetched data
+                this.products = response.data;
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
     },
-};
+
+
+
+// async addProduct() {
+//     try {
+//         const response = await axios.post('/api/addProduct', {
+//             upc: this.newProduct.ProductName,
+//             name: this.newProduct.ProductName,
+//             description: this.newProduct.ProductDescription,
+//             quantity: this.newProduct.Quantity,
+//             price: this.newProduct.Price,
+//             categoryID: this.newProduct.CategoryID, // Adjust property name
+//             status: this.newProduct.Status,
+//         });
+
+//         // Handle the response from the backend
+//         console.log(response.data.message);
+
+//         // Reset the form after successful submission
+//         this.newProduct = {
+//             ProductName: '',
+//             ProductDescription: '',
+//             CategoryName: '',
+//             Quantity: 0,
+//             Price: 0,
+//             Status: '',
+//             categoryID: null, // Adjust property name
+//         };
+//     } catch (error) {
+//         console.error('Error adding product:', error.response.data.message);
+//     }
+// },
+
+}
 </script>
+
+<style>
+
+
+
+
+
+
+
+
+
+
+.peso-input input::before {
+  content: "₱ ";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: grey; /* Adjust the color as needed */
+}
+</style>
