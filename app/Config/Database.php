@@ -27,9 +27,9 @@ class Database extends Config
     public array $default = [
         'DSN'          => '',
         'hostname'     => 'localhost',
-        'username'     => 'root',
-        'password'     => '',
-        'database'     => 'mapfixer',
+        'username'     => 'u262559041_mautoparts',
+        'password'     => 'Mindoro.Auto.Part.123',
+        'database'     => 'u262559041_map_db',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
