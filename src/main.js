@@ -8,7 +8,7 @@ import { loadFonts } from './plugins/webfontloader'
 
 import axios from 'axios'
 loadFonts()
-axios.defaults.baseURL = 'http://finalmap.test/'
+axios.defaults.baseURL = 'https://mindoroautoparts.online/mindoroautoparts/'
 
 createApp(App)
   .use(router)
