@@ -23,12 +23,9 @@ class RegisterController extends ResourceController
             'Address' => ['rules' => 'required|min_length[2]|max_length[255]'],
         ];
             
-        // Validate user input based on defined rules
         if ($this->validate($rules)) {
-            // If validation passes, create a new UserModel instance
             $model = new UserModel();
             
-            // Prepare data for user registration
             $data = [
                 'Name' => $this->request->getVar('Name'),
                 'Position' => $this->request->getVar('Position'),
@@ -38,13 +35,10 @@ class RegisterController extends ResourceController
                 'Address' => $this->request->getVar('Address'),
             ];
             
-            // Save user data to the database
             $model->save($data);
             
-            // Respond with a success message
             return $this->respond(['message' => 'Registered Successfully'], 200);
         } else {
-            // If validation fails, respond with error messages
             $response = [
                 'errors' => $this->validator->getErrors(),
                 'message' => 'Invalid Inputs'

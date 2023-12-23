@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\RESTFul\ResourceController;
+use CodeIgniter\RESTful\ResourceController;
 use App\Models\ProductCategoryModel;
 use App\Models\ProductsModel;
 use App\Models\CategoryModel;
@@ -57,7 +57,7 @@ class ProductsController extends ResourceController
 
             return $this->respond(['message' => 'Product saved successfully']);
         } catch (\Throwable $th) {
-            return $this->respond(['message' => $th->getMessage]);
+            return $this->respond(['message' => $th->getMessage()]);
         }
     }
 
